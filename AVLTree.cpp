@@ -5,55 +5,51 @@
 #include "AVLTree.h"
 
 AVLTree::AVLTree() {
-    Init(); // Initialize pointers when constructor is called
-}
-
-void AVLTree::Init() {
-    Root = NIL = new Node;
+    root = NIL = new AVLNode;
     NIL->h = 0;
     NIL->left = NIL->right = NULL;
 }
 
 AVLTree::~AVLTree() {
-    deallocMemory(Root);
+    deallocMemory(root);
 }
 
-void AVLTree::deallocMemory(Node *N) {
-    if (N == NIL) return;
-    deallocMemory(N->left);
-    deallocMemory(N->right);
-    delete N;
-    N = NIL;
+void AVLTree::deallocMemory(AVLNode *node) {
+    if (node == NIL) return;
+    deallocMemory(node->left);
+    deallocMemory(node->right);
+    delete node;
+    node = NIL;
 }
 
 bool AVLTree::isEmpty() {
-    return Root->value.compare("") == 0;
+    return root->value.compare("") == 0;
 }
 
-bool AVLTree::Search(string val) {
-    return Search(Root, val);
+bool AVLTree::search(string val) {
+    return search(root, val);
 }
 
-bool AVLTree::Search(Node *N, string val) {
-    if (N == NIL)
+bool AVLTree::search(AVLNode *node, string val) {
+    if (node == NIL)
         return false;
 
-    if (N->value == val)
+    if (node->value == val)
         return true;
 
-    if (val < N->value)
-        return Search(N->left, val);
+    if (val < node->value)
+        return search(node->left, val);
     else
-        return Search(N->right, val);
+        return search(node->right, val);
 }
 
-void AVLTree::Insert(string val) {
-    Root = Insert(Root, val);
+void AVLTree::insert(string val) {
+    root = insert(root, val);
 }
 
-Node *AVLTree::Insert(Node *N, string val) {
+AVLNode *AVLTree::insert(AVLNode *N, string val) {
     if (N == NIL) {
-        N = new Node;
+        N = new AVLNode;
         N->value = val;
         N->left = N->right = NIL;
         N->h = 1;
@@ -62,102 +58,90 @@ Node *AVLTree::Insert(Node *N, string val) {
     }
 
     if (val <= N->value)
-        N->left = Insert(N->left, val);
+        N->left = insert(N->left, val);
     else
-        N->right = Insert(N->right, val);
+        N->right = insert(N->right, val);
 
-    return Balance(N);
+    return balance(N);
 }
 
-int AVLTree::Max(int a, int b) {
+int AVLTree::max(int a, int b) {
     return a>b ? a : b;
 }
 
-void AVLTree::GetHeight(Node *N) {
-    N->h = 1 + Max(N->left->h, N->right->h);
+void AVLTree::getHeight(AVLNode *N) {
+    N->h = 1 + max(N->left->h, N->right->h);
 }
 
-Node *AVLTree::RotateLeft(Node *N) {
-    Node *t = N->left;
+AVLNode *AVLTree::rotateLeft(AVLNode *N) {
+    AVLNode *t = N->left;
     N->left = t->right;
     t->right = N;
-    GetHeight(N);
-    GetHeight(t);
+    getHeight(N);
+    getHeight(t);
 
     return t;
 }
 
-Node *AVLTree::RotateRight(Node *N) {
-    Node *t = N->right;
+AVLNode *AVLTree::rotateRight(AVLNode *N) {
+    AVLNode *t = N->right;
     N->right = t->left;
     t->left = N;
-    GetHeight(N);
-    GetHeight(t);
+    getHeight(N);
+    getHeight(t);
 
     return t;
 }
 
-Node *AVLTree::Balance(Node *N) {
-    GetHeight(N);
+AVLNode *AVLTree::balance(AVLNode *N) {
+    getHeight(N);
 
     if (N->left->h > N->right->h + 1) {
         if (N->left->right->h > N->left->left->h)
-            N->left = RotateRight(N->left);
-        N = RotateLeft(N);
+            N->left = rotateRight(N->left);
+        N = rotateLeft(N);
     }
     else if (N->right->h > N->left->h + 1) {
         if (N->right->left->h > N->right->right->h)
-            N->right = RotateLeft(N->right);
-        N = RotateRight(N);
+            N->right = rotateLeft(N->right);
+        N = rotateRight(N);
     }
 
     return N;
 }
 
-void AVLTree::PrintInOrderTraversal() {
-    PrintInOrderTraversal(Root);
+void AVLTree::printInOrderTraversal() {
+    printInOrderTraversal(root);
 }
 
-void AVLTree::PrintInOrderTraversal(Node *N) {
+void AVLTree::printInOrderTraversal(AVLNode *N) {
     if (N != NIL) {
-        PrintInOrderTraversal(N->left);
+        printInOrderTraversal(N->left);
         cout << N->value << " ";
-        PrintInOrderTraversal(N->right);
+        printInOrderTraversal(N->right);
     }
 }
 
-void AVLTree::PrintPreOrderTraversal() {
-    PrintPreOrderTraversal(Root);
+void AVLTree::printPreOrderTraversal() {
+    printPreOrderTraversal(root);
 }
 
-void AVLTree::PrintPreOrderTraversal(Node *N) {
+void AVLTree::printPreOrderTraversal(AVLNode *N) {
     if (N != NIL) {
         cout << N->value << " ";
-        PrintPreOrderTraversal(N->left);
-        PrintPreOrderTraversal(N->right);
+        printPreOrderTraversal(N->left);
+        printPreOrderTraversal(N->right);
     }
 }
 
-void AVLTree::PrintPostOrderTraversal() {
-    PrintPostOrderTraversal(Root);
+void AVLTree::printPostOrderTraversal() {
+    printPostOrderTraversal(root);
 }
 
-void AVLTree::PrintPostOrderTraversal(Node *N) {
+void AVLTree::printPostOrderTraversal(AVLNode *N) {
     if (N == NIL) {
-        PrintPostOrderTraversal(N->left);
-        PrintPostOrderTraversal(N->right);
+        printPostOrderTraversal(N->left);
+        printPostOrderTraversal(N->right);
         cout << N->value << " ";
     }
-}
-
-string AVLTree::Max() {
-    Node *N = Root;
-    while (N->right != NIL) N = N->right;
-    return N->value;
-}
-
-string AVLTree::Min() {
-    Node *N = Root;
-    while (N->left != NIL) N = N->left;
-    return N->value;
 }

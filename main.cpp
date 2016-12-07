@@ -5,7 +5,7 @@ using namespace std;
 
 int main() {
     // for debug from CLion text path  /Users/boranyildirim/Desktop/CS202/Assignment_4/vocabulary.txt
-    SuggestWords words("vocabulary.txt");
+    SuggestWords words("/Users/boranyildirim/Desktop/CS202/Assignment_4/vocabulary.txt");
 
     cout << "Welcome to Dorthraki Vocabulary!!!" << endl;
 

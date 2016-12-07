@@ -10,16 +10,16 @@
 #include <string>
 using namespace std;
 
-struct Node {
+struct AVLNode {
     string value;
     int h; // The depth of the node in the tree
-    Node *left, *right;
+    AVLNode *left, *right;
 };
 
 class AVLTree {
 
 private:
-    Node *Root, *NIL; // The Root is private to restrict direct access to the pointers
+    AVLNode *root, *NIL; // The root is private to restrict direct access to the pointers
 
 public:
     AVLTree();
@@ -28,61 +28,53 @@ public:
     // in a bottom-up style, deallocs the dynamic allocated memory
     ~AVLTree();
 
+    // if the AVLTree empty return true, else false
     bool isEmpty();
 
-    // This public method Search calls for the private method Search, in order not to give user access to the Root
-    bool Search(string val);
+    // This public method search calls for the private method search, in order not to give user access to the root
+    bool search(string val);
 
     // The same pattern of restricting access is here
-    void Insert(string val);
-
-    // The Max value form AVL is the rightmost node in the tree
-    string Max();
-
-    // The Min value from AVL is in the leftmost node of the tree
-    string Min();
+    void insert(string val);
 
     // In-Order traversal, prints the elements in ascending order
-    void PrintInOrderTraversal();
+    void printInOrderTraversal();
 
     // Pre-Order Traversal
-    void PrintPreOrderTraversal();
+    void printPreOrderTraversal();
 
     // Post-Order Traversal
-    void PrintPostOrderTraversal();
+    void printPostOrderTraversal();
 
 private:
-    // Initialization of the Tree
-    // Create Root and NIL node, in order not to acces unallocated memory
-    void Init();
 
-    // Search the value T in subtree with the root in node N,
-    bool Search(Node *N, string val);
+    // search the value T in subtree with the root in node N,
+    bool search(AVLNode *node, string val);
 
     // After insertion, call balance method, to keep the tree balanced
-    Node * Insert(Node *N, string val);
+    AVLNode * insert(AVLNode *node, string val);
 
-    int Max(int a, int b);
+    int max(int a, int b);
 
-    // Updadets the depth of the node N in the tree
-    void GetHeight(Node *N);
+    // the depth of the node N in the tree
+    void getHeight(AVLNode *node);
 
     // The Rotate left operation, for balancing the tree
-    Node * RotateLeft(Node *N);
+    AVLNode * rotateLeft(AVLNode *node);
 
-    Node * RotateRight(Node *N);
+    AVLNode * rotateRight(AVLNode *node);
 
-    // Balance the nodes in the way that no two subtrees of a node have their maximum depth with a difference bigger than 1
-    Node* Balance(Node *N);
+    // balance the nodes in the way that no two subtrees of a node have their maximum depth with a difference bigger than 1
+    AVLNode* balance(AVLNode *node);
 
-    void PrintInOrderTraversal(Node *N);
+    void printInOrderTraversal(AVLNode *node);
 
-    void PrintPreOrderTraversal(Node *N);
+    void printPreOrderTraversal(AVLNode *node);
 
-    void PrintPostOrderTraversal(Node *N);
+    void printPostOrderTraversal(AVLNode *node);
 
     // Recursively destroys the tree
-    void deallocMemory(Node *N);
+    void deallocMemory(AVLNode *node);
 
     friend class SuggestWords;
 };

@@ -7,6 +7,7 @@
 
 SuggestWords::SuggestWords(string file) {
     addWords(file);
+    suggestTree = new AVLTree();
 }
 
 void SuggestWords::addWords(string file) {
@@ -14,7 +15,7 @@ void SuggestWords::addWords(string file) {
     ifstream myfile (file);
     if (myfile.is_open()) {
         while ( getline (myfile,line) ) {
-            wordTree.Insert(line);
+            wordTree.insert(line);
         }
         myfile.close();
     }
@@ -24,34 +25,34 @@ void SuggestWords::addWords(string file) {
 }
 
 void SuggestWords::printTree() {
-    wordTree.PrintInOrderTraversal();
+    wordTree.printInOrderTraversal();
 }
 
 void SuggestWords::findWord(const string &word) {
-    if ( wordTree.Search(word) )
+    if (wordTree.search(word) )
         cout << "Found! The word is in vocabulary." << endl;
     else {
         cout << "NOT FOUND!!" << endl;
         int length = (int) word.length();
         if (length >= 5)  {
-            makeSuggestions(wordTree.Root ,word, length / 2 + 1);
+            makeSuggestions(wordTree.root ,word, length / 2 + 1);
         }
         else
-            makeSuggestions(wordTree.Root ,word, length);
+            makeSuggestions(wordTree.root ,word, length);
 
-        if ( !suggestTree.isEmpty() ) {
+        if ( !suggestTree->isEmpty() ) {
             cout << "Some suggestions: ";
-            suggestTree.PrintInOrderTraversal();
+            suggestTree->printInOrderTraversal();
             cout << endl;
         }
         else
             cout << "There is no word to suggest." << endl;
-        suggestTree.deallocMemory(suggestTree.Root);
-        suggestTree.Init();
+        suggestTree->deallocMemory(suggestTree->root);
+        suggestTree = new AVLTree;
     }
 }
 
-void SuggestWords::makeSuggestions(Node *node, const string &word, const int &length) {
+void SuggestWords::makeSuggestions(AVLNode *node, const string &word, const int &length) {
     if (node != wordTree.NIL && word.at(0) != 0) {
         if (word.at(0) < node->value.at(0)) {
             makeSuggestions(node->left, word, length);
@@ -67,7 +68,7 @@ void SuggestWords::makeSuggestions(Node *node, const string &word, const int &le
                     flag = true;
             }
             if (!flag)
-                suggestTree.Insert(node->value);
+                suggestTree->insert(node->value);
 
             makeSuggestions(node->left, word, length);
             makeSuggestions(node->right, word, length);

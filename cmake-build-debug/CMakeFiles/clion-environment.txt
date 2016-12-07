@@ -1,0 +1,1 @@
+CMake: 3.6.2@/Users/boranyildirim/Desktop/CLion.app/Contents/bin/cmake/bin/cmake

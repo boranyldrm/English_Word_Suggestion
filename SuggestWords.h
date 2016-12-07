@@ -24,9 +24,9 @@ public:
 private:
     AVLTree wordTree;
 
-    AVLTree suggestTree;
+    AVLTree *suggestTree;
 
-    void makeSuggestions (Node *node, const string &word, const int &length);
+    void makeSuggestions (AVLNode *node, const string &word, const int &length);
 };
 
 #endif
