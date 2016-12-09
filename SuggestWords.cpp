@@ -10,9 +10,13 @@ SuggestWords::SuggestWords(string file) {
     suggestTree = new AVLTree();
 }
 
+SuggestWords::~SuggestWords() {
+    delete suggestTree;
+}
+
 void SuggestWords::addWords(string file) {
     string line;
-    ifstream myfile (file);
+    ifstream myfile (file.c_str());
     if (myfile.is_open()) {
         while ( getline (myfile,line) ) {
             wordTree.insert(line);
@@ -34,9 +38,9 @@ void SuggestWords::findWord(const string &word) {
     else {
         cout << "NOT FOUND!!" << endl;
         int length = (int) word.length();
-        if (length >= 5)  {
+
+        if (length >= 5)
             makeSuggestions(wordTree.root ,word, length / 2 + 1);
-        }
         else
             makeSuggestions(wordTree.root ,word, length);
 
@@ -47,6 +51,7 @@ void SuggestWords::findWord(const string &word) {
         }
         else
             cout << "There is no word to suggest." << endl;
+
         suggestTree->deallocMemory(suggestTree->root);
         suggestTree = new AVLTree;
     }

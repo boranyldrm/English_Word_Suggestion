@@ -16,6 +16,9 @@ class SuggestWords {
 
 public:
     SuggestWords(string file);
+
+    ~SuggestWords();
+
     void printTree();
 
     void addWords(string file);
