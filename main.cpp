@@ -4,12 +4,12 @@
 using namespace std;
 
 int main() {
-    // for debug from CLion text path  /Users/boranyildirim/Desktop/CS202/Assignment_4/vocabulary.txt
-    SuggestWords words("/Users/boranyildirim/Desktop/CS202/Assignment_4/vocabulary.txt");
 
-    cout << "Welcome to Dorthraki Vocabulary!!!" << endl;
+    SuggestWords words("words");
 
-    cout << "This vocabulary contains 378 words." << endl;
+    cout << "Welcome to English dictionary." << endl << endl;
+
+    //cout << "This vocabulary contains 378 words." << endl;
 
     string userInput;
 

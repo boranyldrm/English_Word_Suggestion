@@ -39,7 +39,7 @@ void SuggestWords::findWord(const string &word) {
         cout << "NOT FOUND!!" << endl;
         int length = (int) word.length();
 
-        if (length >= 5)
+        if (length >= 6)
             makeSuggestions(wordTree.root ,word, length / 2 + 1);
         else
             makeSuggestions(wordTree.root ,word, length);
@@ -68,14 +68,17 @@ void SuggestWords::makeSuggestions(AVLNode *node, const string &word, const int 
 
         if (word.at(0) == node->value.at(0)) {
             bool flag = false;
-            for (int i = 1; i < length && !flag; ++i) {
+            int cmp_len = (int) node->value.length();
+            for (int i = 1; i < length && i < cmp_len && !flag; ++i) {
                 if (word.at(i) != node->value.at(i))
                     flag = true;
             }
             if (!flag)
                 suggestTree->insert(node->value);
 
+
             makeSuggestions(node->left, word, length);
+
             makeSuggestions(node->right, word, length);
         }
     }
