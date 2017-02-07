@@ -1,1 +1,1 @@
-This repository makes the closest estimates to the word entered with AVL Tree.
+This repository makes the closest predictions to the words entered using AVL Tree.
